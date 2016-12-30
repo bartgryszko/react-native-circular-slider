@@ -1,0 +1,38 @@
+{
+  "name": "react-native-circular-slider",
+  "version": "1.0.0",
+  "description": "React Native component for creating circle slider",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bgryszko/react-native-circular-slider.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "slider",
+    "chart",
+    "svg",
+    "bedtime",
+    "circular",
+    "circle",
+    "round",
+    "time",
+    "timer",
+    "react-component",
+  ],
+  "author": {
+    "name": "Bart Gryszko",
+    "email": "b@gryszko.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bgryszko/react-native-circular-slider/issues"
+  },
+  "homepage": "https://github.com/bgryszko/react-native-circular-slider",
+  "dependencies": {
+    "d3-interpolate": "^1.1.2",
+    "lodash.range": "^3.2.0",
+    "react-native-svg": "^4.4.1",
+  }
+}
