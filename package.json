@@ -1,7 +1,7 @@
 {
   "name": "react-native-circular-slider",
   "version": "1.0.0",
-  "description": "React Native component for creating circle slider",
+  "description": "React Native component for creating circular slider",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
     "round",
     "time",
     "timer",
-    "react-component",
+    "react-component"
   ],
   "author": {
     "name": "Bart Gryszko",
@@ -33,6 +33,6 @@
   "dependencies": {
     "d3-interpolate": "^1.1.2",
     "lodash.range": "^3.2.0",
-    "react-native-svg": "^4.4.1",
+    "react-native-svg": "^4.4.1"
   }
 }
