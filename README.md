@@ -83,6 +83,12 @@ open ios/Bedtime.xcodeproj
 ```
 XCode will open. Click Run button and that's it.
 
+## Author
+
+Bartosz Gryszko (b@gryszko.com)
+
+For new components and updates [follow me on twitter](http://twitter.com/bgryszko).
+
 
 ## License
 
