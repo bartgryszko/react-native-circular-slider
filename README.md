@@ -1,3 +1,7 @@
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![Version](https://img.shields.io/npm/v/react-native-circular-slider.svg)](https://www.npmjs.com/package/react-native-circular-slider)
+[![Twitter Follow](https://img.shields.io/twitter/follow/bgryszko.svg?style=social&label=Follow)](https://twitter.com/bgryszko)
+
 # react-native-circular-slider :radio_button:
 
 React Native component for creating circular slider.
