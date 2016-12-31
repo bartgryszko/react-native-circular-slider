@@ -1,5 +1,3 @@
 {
-  "presets": [
-    "babel-preset-exponent"
-  ]
+"presets": ["react-native"]
 }
