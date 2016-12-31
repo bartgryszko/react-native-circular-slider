@@ -1,5 +1,6 @@
+import Exponent from 'exponent';
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Svg, { G, Path } from 'react-native-svg';
 
 import CircularSlider from 'react-native-circular-slider';
@@ -168,4 +169,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('Bedtime', () => Bedtime);
+Exponent.registerRootComponent(Bedtime);

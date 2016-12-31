@@ -1,0 +1,19 @@
+{
+  "name": "Bedtime",
+  "description": "react-native-circular-slider is a component for creating circular sliders, this example uses it to re-create Apple Bedtime.",
+  "slug": "bedtime",
+  "sdkVersion": "12.0.0",
+  "version": "1.0.0",
+  "orientation": "portrait",
+  "primaryColor": "#cccccc",
+  "iconUrl": "http://url.brentvatne.ca/YBqq.png",
+  "loading": {
+    "iconUrl": "http://url.brentvatne.ca/YBqq.png",
+    "hideExponentText": false
+  },
+  "packagerOpts": {
+    "assetExts": [
+      "ttf"
+    ]
+  }
+}

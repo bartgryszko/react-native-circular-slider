@@ -2,7 +2,7 @@
   "name": "react-native-circular-slider",
   "version": "1.0.0",
   "description": "React Native component for creating circular slider",
-  "main": "index.js",
+  "main": "src/CircularSlider.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/bgryszko/react-native-circular-slider.git"
@@ -25,6 +25,10 @@
     "name": "Bart Gryszko",
     "email": "b@gryszko.com"
   },
+  "files": [
+    "src",
+    "README.md"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bgryszko/react-native-circular-slider/issues"
@@ -33,6 +37,6 @@
   "dependencies": {
     "d3-interpolate": "^1.1.2",
     "lodash.range": "^3.2.0",
-    "react-native-svg": "^4.4.1"
+    "react-native-svg": ">=4.3.3"
   }
 }
