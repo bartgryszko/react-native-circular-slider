@@ -1,3 +1,7 @@
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![Version](https://img.shields.io/npm/v/react-native-circular-slider.svg)](https://www.npmjs.com/package/react-native-circular-slider)
+[![Twitter Follow](https://img.shields.io/twitter/follow/bgryszko.svg?style=social&label=Follow)](https://twitter.com/bgryszko)
+
 # react-native-circular-slider :radio_button:
 
 React Native component for creating circular slider.
@@ -85,6 +89,13 @@ If you'd rather build it locally, follow these steps:
   npm install
   ```
 3. Open the project with XDE
+
+
+## Author
+
+Bartosz Gryszko (b@gryszko.com)
+
+For new components and updates [follow me on twitter](http://twitter.com/bgryszko).
 
 ## License
 
