@@ -7,18 +7,14 @@
     "test": "jest"
   },
   "dependencies": {
-    "react-native-circular-slider": "^1.0.0",
-    "react": "15.4.1",
-    "react-native": "0.39.2",
-    "react-native-svg": "^4.4.1"
-  },
-  "devDependencies": {
-    "babel-jest": "18.0.0",
-    "babel-preset-react-native": "1.9.1",
-    "jest": "18.0.0",
-    "react-test-renderer": "15.4.1"
+    "react-native-circular-slider": "file:../..",
+    "react": "~15.3.2",
+    "react-native": "github:exponentjs/react-native#sdk-12.0.0",
+    "@exponent/vector-icons": "~2.0.3",
+    "exponent": "~12.0.3"
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "main": "main.js"
 }

@@ -25,7 +25,7 @@ React Native component for creating circular slider.
 Import Circular Slider
 
 ```js
-import { CircularSlider } from 'react-native-circular-slider';
+import CircularSlider from 'react-native-circular-slider';
 ```
 
 Use as follows:
@@ -69,16 +69,22 @@ You can configure the passing by following props:
 
 ## Working example app
 
-You can find working example in the `example` directory of this repository. You can run it by:
+You can find working example in the `example` directory of this
+repository.
 
-```sh
-git clone https://github.com/bgryszko/react-native-circular-slider.git
-cd  react-native-circular-slider/example/Bedtime
-npm install
-open ios/Bedtime.xcodeproj
-```
-XCode will open. Click Run button and that's it.
+The easiest way to run it is with Exponent: https://getexponent.com/@community/bedtime
 
+If you'd rather build it locally, follow these steps:
+
+1. [Download XDE](https://docs.getexponent.com/versions/latest/introduction/installation.html)
+2. Clone the repo and install dependencies
+
+  ```sh
+  git clone https://github.com/bgryszko/react-native-circular-slider.git
+  cd  react-native-circular-slider/example/Bedtime
+  npm install
+  ```
+3. Open the project with XDE
 
 ## License
 
