@@ -1,6 +1,6 @@
 {
   "name": "react-native-circular-slider",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React Native component for creating circular slider",
   "main": "src/CircularSlider.js",
   "repository": {
