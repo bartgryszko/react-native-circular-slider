@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { PanResponder } from 'react-native';
+import { PanResponder, View } from 'react-native';
 import Svg, { Circle, G, LinearGradient, Path, Defs, Stop } from 'react-native-svg';
 import range from 'lodash.range';
 import { interpolateHcl as interpolateGradient } from 'd3-interpolate';
@@ -82,7 +82,6 @@ export default class CircularSlider extends PureComponent {
     this._sleepPanResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: this.setCircleCenter,
 
       onPanResponderMove: (evt, { moveX, moveY }) => {
         const { circleCenterX, circleCenterY } = this.state;
@@ -108,7 +107,6 @@ export default class CircularSlider extends PureComponent {
     this._wakePanResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: this.setCircleCenter,
 
       onPanResponderMove: (evt, { moveX, moveY }) => {
         const { circleCenterX, circleCenterY } = this.state;
@@ -126,12 +124,12 @@ export default class CircularSlider extends PureComponent {
     });
   }
 
-  componentDidMount() {
+  onLayout = () => {
     this.setCircleCenter();
   }
 
   setCircleCenter = () => {
-    this._circle.root.measure((x, y, w, h, px , py) => {
+    this._circle.measure((x, y, w, h, px , py) => {
       const halfOfContainer = this.getContainerWidth() / 2;
       this.setState({ circleCenterX: px + halfOfContainer, circleCenterY: py + halfOfContainer });
     });
@@ -152,105 +150,107 @@ export default class CircularSlider extends PureComponent {
     const stop = calculateArcCircle(segments - 1, segments, radius, startAngle, angleLength);
 
     return (
-      <Svg
-        height={containerWidth}
-        width={containerWidth}
-      >
-        <Defs>
-          {
-            range(segments).map(i => {
-              const { fromX, fromY, toX, toY } = calculateArcCircle(i, segments, radius, startAngle, angleLength);
-              const { fromColor, toColor } = calculateArcColor(i, segments, gradientColorFrom, gradientColorTo)
-              return (
-                <LinearGradient key={i} id={getGradientId(i)} x1={fromX.toFixed(2)} y1={fromY.toFixed(2)} x2={toX.toFixed(2)} y2={toY.toFixed(2)}>
-                  <Stop offset="0%" stopColor={fromColor} />
-                  <Stop offset="1" stopColor={toColor} />
-                </LinearGradient>
-              )
-            })
-          }
-        </Defs>
+      <View style={{ width: containerWidth, height: containerWidth }} onLayout={this.onLayout}>
+        <Svg
+          height={containerWidth}
+          width={containerWidth}
+          ref={circle => this._circle = circle}
+        >
+          <Defs>
+            {
+              range(segments).map(i => {
+                const { fromX, fromY, toX, toY } = calculateArcCircle(i, segments, radius, startAngle, angleLength);
+                const { fromColor, toColor } = calculateArcColor(i, segments, gradientColorFrom, gradientColorTo)
+                return (
+                  <LinearGradient key={i} id={getGradientId(i)} x1={fromX.toFixed(2)} y1={fromY.toFixed(2)} x2={toX.toFixed(2)} y2={toY.toFixed(2)}>
+                    <Stop offset="0%" stopColor={fromColor} />
+                    <Stop offset="1" stopColor={toColor} />
+                  </LinearGradient>
+                )
+              })
+            }
+          </Defs>
 
-        {/*
-          ##### Circle
-        */}
+          {/*
+            ##### Circle
+          */}
 
-        <G transform={{ translate: `${strokeWidth/2 + radius + 1}, ${strokeWidth/2 + radius + 1}` }}>
-          <Circle
-            r={radius}
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            stroke={bgCircleColor}
-            ref={circle => this._circle = circle}
-          />
-          {
-            showClockFace && (
-              <ClockFace
-                r={radius - strokeWidth / 2}
-                stroke={clockFaceColor}
-              />
-            )
-          }
-          {
-            range(segments).map(i => {
-              const { fromX, fromY, toX, toY } = calculateArcCircle(i, segments, radius, startAngle, angleLength);
-              const d = `M ${fromX.toFixed(2)} ${fromY.toFixed(2)} A ${radius} ${radius} 0 0 1 ${toX.toFixed(2)} ${toY.toFixed(2)}`;
-
-              return (
-                <Path
-                  d={d}
-                  key={i}
-                  strokeWidth={strokeWidth}
-                  stroke={`url(#${getGradientId(i)})`}
-                  fill="transparent"
+          <G transform={{ translate: `${strokeWidth/2 + radius + 1}, ${strokeWidth/2 + radius + 1}` }}>
+            <Circle
+              r={radius}
+              strokeWidth={strokeWidth}
+              fill="transparent"
+              stroke={bgCircleColor}
+            />
+            {
+              showClockFace && (
+                <ClockFace
+                  r={radius - strokeWidth / 2}
+                  stroke={clockFaceColor}
                 />
               )
-            })
-          }
-
-          {/*
-            ##### Stop Icon
-          */}
-
-          <G
-            fill={gradientColorTo}
-            transform={{ translate: `${stop.toX}, ${stop.toY}` }}
-            onPressIn={() => this.setState({ angleLength: angleLength + Math.PI / 2 })}
-            {...this._wakePanResponder.panHandlers}
-          >
-            <Circle
-              r={(strokeWidth - 1) / 2}
-              fill={bgCircleColor}
-              stroke={gradientColorTo}
-              strokeWidth="1"
-            />
-            {
-              stopIcon
             }
-          </G>
-
-          {/*
-            ##### Start Icon
-          */}
-
-          <G
-            fill={gradientColorFrom}
-            transform={{ translate: `${start.fromX}, ${start.fromY}` }}
-            onPressIn={() => this.setState({ startAngle: startAngle - Math.PI / 2, angleLength: angleLength + Math.PI / 2 })}
-            {...this._sleepPanResponder.panHandlers}
-          >
-            <Circle
-              r={(strokeWidth - 1) / 2}
-              fill={bgCircleColor}
-              stroke={gradientColorFrom}
-              strokeWidth="1"
-            />
             {
-              startIcon
+              range(segments).map(i => {
+                const { fromX, fromY, toX, toY } = calculateArcCircle(i, segments, radius, startAngle, angleLength);
+                const d = `M ${fromX.toFixed(2)} ${fromY.toFixed(2)} A ${radius} ${radius} 0 0 1 ${toX.toFixed(2)} ${toY.toFixed(2)}`;
+
+                return (
+                  <Path
+                    d={d}
+                    key={i}
+                    strokeWidth={strokeWidth}
+                    stroke={`url(#${getGradientId(i)})`}
+                    fill="transparent"
+                  />
+                )
+              })
             }
+
+            {/*
+              ##### Stop Icon
+            */}
+
+            <G
+              fill={gradientColorTo}
+              transform={{ translate: `${stop.toX}, ${stop.toY}` }}
+              onPressIn={() => this.setState({ angleLength: angleLength + Math.PI / 2 })}
+              {...this._wakePanResponder.panHandlers}
+            >
+              <Circle
+                r={(strokeWidth - 1) / 2}
+                fill={bgCircleColor}
+                stroke={gradientColorTo}
+                strokeWidth="1"
+              />
+              {
+                stopIcon
+              }
+            </G>
+
+            {/*
+              ##### Start Icon
+            */}
+
+            <G
+              fill={gradientColorFrom}
+              transform={{ translate: `${start.fromX}, ${start.fromY}` }}
+              onPressIn={() => this.setState({ startAngle: startAngle - Math.PI / 2, angleLength: angleLength + Math.PI / 2 })}
+              {...this._sleepPanResponder.panHandlers}
+            >
+              <Circle
+                r={(strokeWidth - 1) / 2}
+                fill={bgCircleColor}
+                stroke={gradientColorFrom}
+                strokeWidth="1"
+              />
+              {
+                startIcon
+              }
+            </G>
           </G>
-        </G>
-      </Svg>
+        </Svg>
+      </View>
     );
   }
 }
