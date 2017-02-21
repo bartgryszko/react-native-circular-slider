@@ -61,6 +61,7 @@ export default class CircularSlider extends PureComponent {
     bgCircleColor: PropTypes.string,
     stopIcon: PropTypes.element,
     startIcon: PropTypes.element,
+    fixedStart: PropTypes.bool
   }
 
   static defaultProps = {
@@ -71,6 +72,7 @@ export default class CircularSlider extends PureComponent {
     gradientColorTo: '#ffcf00',
     clockFaceColor: '#9d9d9d',
     bgCircleColor: '#171717',
+    fixedStart: false
   }
 
   state = {
@@ -148,6 +150,11 @@ export default class CircularSlider extends PureComponent {
 
     const start = calculateArcCircle(0, segments, radius, startAngle, angleLength);
     const stop = calculateArcCircle(segments - 1, segments, radius, startAngle, angleLength);
+
+    const startProps = !this.props.fixedStart ? {
+      onPressIn: () => this.setState({ startAngle: startAngle - Math.PI / 2, angleLength: angleLength + Math.PI / 2 }),
+      ...this._sleepPanResponder.panHandlers
+    } : {};
 
     return (
       <View style={{ width: containerWidth, height: containerWidth }} onLayout={this.onLayout}>
@@ -235,15 +242,19 @@ export default class CircularSlider extends PureComponent {
             <G
               fill={gradientColorFrom}
               transform={{ translate: `${start.fromX}, ${start.fromY}` }}
-              onPressIn={() => this.setState({ startAngle: startAngle - Math.PI / 2, angleLength: angleLength + Math.PI / 2 })}
-              {...this._sleepPanResponder.panHandlers}
+              {...startProps}
             >
-              <Circle
-                r={(strokeWidth - 1) / 2}
-                fill={bgCircleColor}
-                stroke={gradientColorFrom}
-                strokeWidth="1"
-              />
+              {
+                // Hide the icon circle if we have a fixed start position and no icon
+                !this.props.fixedStart || startIcon ? (
+                  <Circle
+                    r={(strokeWidth - 1) / 2}
+                    fill={bgCircleColor}
+                    stroke={gradientColorFrom}
+                    strokeWidth="1"
+                  />
+                ) : false
+              }
               {
                 startIcon
               }
