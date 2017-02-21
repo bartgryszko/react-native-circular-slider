@@ -244,17 +244,12 @@ export default class CircularSlider extends PureComponent {
               transform={{ translate: `${start.fromX}, ${start.fromY}` }}
               {...startProps}
             >
-              {
-                // Hide the icon circle if we have a fixed start position and no icon
-                !this.props.fixedStart || startIcon ? (
-                  <Circle
-                    r={(strokeWidth - 1) / 2}
-                    fill={bgCircleColor}
-                    stroke={gradientColorFrom}
-                    strokeWidth="1"
-                  />
-                ) : false
-              }
+              <Circle
+                r={(strokeWidth - 1) / 2}
+                fill={!this.props.fixedStart || startIcon ? bgCircleColor : gradientColorFrom}
+                stroke={gradientColorFrom}
+                strokeWidth="1"
+              />
               {
                 startIcon
               }
