@@ -215,27 +215,6 @@ export default class CircularSlider extends PureComponent {
             }
 
             {/*
-              ##### Stop Icon
-            */}
-
-            <G
-              fill={gradientColorTo}
-              transform={{ translate: `${stop.toX}, ${stop.toY}` }}
-              onPressIn={() => this.setState({ angleLength: angleLength + Math.PI / 2 })}
-              {...this._wakePanResponder.panHandlers}
-            >
-              <Circle
-                r={(strokeWidth - 1) / 2}
-                fill={bgCircleColor}
-                stroke={gradientColorTo}
-                strokeWidth="1"
-              />
-              {
-                stopIcon
-              }
-            </G>
-
-            {/*
               ##### Start Icon
             */}
 
@@ -254,6 +233,28 @@ export default class CircularSlider extends PureComponent {
                 startIcon
               }
             </G>
+
+            {/*
+             ##### Stop Icon
+             */}
+
+            <G
+              fill={gradientColorTo}
+              transform={{ translate: `${stop.toX}, ${stop.toY}` }}
+              onPressIn={() => this.setState({ angleLength: angleLength + Math.PI / 2 })}
+              {...this._wakePanResponder.panHandlers}
+            >
+              <Circle
+                r={(strokeWidth - 1) / 2}
+                fill={bgCircleColor}
+                stroke={gradientColorTo}
+                strokeWidth="1"
+              />
+              {
+                stopIcon
+              }
+            </G>
+
           </G>
         </Svg>
       </View>
