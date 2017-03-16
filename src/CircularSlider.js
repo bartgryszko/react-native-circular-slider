@@ -61,6 +61,7 @@ export default class CircularSlider extends PureComponent {
     bgCircleColor: PropTypes.string,
     stopIcon: PropTypes.element,
     startIcon: PropTypes.element,
+    fixedStart: PropTypes.bool
   }
 
   static defaultProps = {
@@ -71,6 +72,7 @@ export default class CircularSlider extends PureComponent {
     gradientColorTo: '#ffcf00',
     clockFaceColor: '#9d9d9d',
     bgCircleColor: '#171717',
+    fixedStart: false
   }
 
   state = {
@@ -149,6 +151,11 @@ export default class CircularSlider extends PureComponent {
     const start = calculateArcCircle(0, segments, radius, startAngle, angleLength);
     const stop = calculateArcCircle(segments - 1, segments, radius, startAngle, angleLength);
 
+    const startProps = !this.props.fixedStart ? {
+      onPressIn: () => this.setState({ startAngle: startAngle - Math.PI / 2, angleLength: angleLength + Math.PI / 2 }),
+      ...this._sleepPanResponder.panHandlers
+    } : {};
+
     return (
       <View style={{ width: containerWidth, height: containerWidth }} onLayout={this.onLayout}>
         <Svg
@@ -208,8 +215,28 @@ export default class CircularSlider extends PureComponent {
             }
 
             {/*
-              ##### Stop Icon
+              ##### Start Icon
             */}
+
+            <G
+              fill={gradientColorFrom}
+              transform={{ translate: `${start.fromX}, ${start.fromY}` }}
+              {...startProps}
+            >
+              <Circle
+                r={(strokeWidth - 1) / 2}
+                fill={!this.props.fixedStart || startIcon ? bgCircleColor : gradientColorFrom}
+                stroke={gradientColorFrom}
+                strokeWidth="1"
+              />
+              {
+                startIcon
+              }
+            </G>
+
+            {/*
+             ##### Stop Icon
+             */}
 
             <G
               fill={gradientColorTo}
@@ -228,26 +255,6 @@ export default class CircularSlider extends PureComponent {
               }
             </G>
 
-            {/*
-              ##### Start Icon
-            */}
-
-            <G
-              fill={gradientColorFrom}
-              transform={{ translate: `${start.fromX}, ${start.fromY}` }}
-              onPressIn={() => this.setState({ startAngle: startAngle - Math.PI / 2, angleLength: angleLength + Math.PI / 2 })}
-              {...this._sleepPanResponder.panHandlers}
-            >
-              <Circle
-                r={(strokeWidth - 1) / 2}
-                fill={bgCircleColor}
-                stroke={gradientColorFrom}
-                strokeWidth="1"
-              />
-              {
-                startIcon
-              }
-            </G>
           </G>
         </Svg>
       </View>
