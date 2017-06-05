@@ -101,6 +101,7 @@ export default class CircularSlider extends PureComponent {
         }
 
         onUpdate({ startAngle: newAngle, angleLength: newAngleLength % (2 * Math.PI) });
+        this._handleOnPress()
       },
     });
 
@@ -120,8 +121,19 @@ export default class CircularSlider extends PureComponent {
         }
 
         onUpdate({ startAngle, angleLength: newAngleLength });
+        this._handleOnPress()
       },
     });
+  }
+
+  _handleOnPress = () => {
+    const { onPressIn, onPressOut } = this.props;
+    const handleOnPressOut = () => setTimeout(() => onPressOut(), 500);
+    clearTimeout(handleOnPressOut);
+
+    onPressIn();
+
+    handleOnPressOut();
   }
 
   onLayout = () => {
