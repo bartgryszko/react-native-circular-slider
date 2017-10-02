@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { G, Circle, Text, Line } from 'react-native-svg';
 import range from 'lodash.range';
 
