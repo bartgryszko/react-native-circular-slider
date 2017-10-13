@@ -37,7 +37,7 @@
   "dependencies": {
     "d3-interpolate": "^1.1.2",
     "lodash.range": "^3.2.0",
-    "react-native-svg": "^5.1.5"
+    "react-native-svg": "4.3.3"
   },
   "peerDependencies": {
     "react-native": ">=0.40.0",
