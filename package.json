@@ -1,6 +1,6 @@
 {
   "name": "react-native-circular-slider",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "React Native component for creating circular slider",
   "main": "src/CircularSlider.js",
   "repository": {
@@ -37,7 +37,7 @@
   "dependencies": {
     "d3-interpolate": "^1.1.2",
     "lodash.range": "^3.2.0",
-    "react-native-svg": "4.3.3"
+    "react-native-svg": "^5.1.5"
   },
   "peerDependencies": {
     "react-native": ">=0.40.0",
