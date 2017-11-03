@@ -125,7 +125,11 @@ export default class CircularSlider extends PureComponent {
   }
 
   onLayout = () => {
-    this.setCircleCenter();
+
+    // Band-aid to fix https://github.com/bgryszko/react-native-circular-slider/issues/7
+    setTimeout(() => {
+      this.setCircleCenter();
+    }, 100);
   }
 
   setCircleCenter = () => {
