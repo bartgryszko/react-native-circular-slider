@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { PanResponder, View } from 'react-native';
-import Svg, { Circle, G, LinearGradient, Path, Defs, Stop } from 'react-native-svg';
+import { PanResponder, View,Platform } from 'react-native';
+import Svg, { Circle, G, LinearGradient, Path, Defs, Stop, Text, TSpan } from 'react-native-svg';
 import range from 'lodash.range';
 import { interpolateHcl as interpolateGradient } from 'd3-interpolate';
 import ClockFace from './ClockFace';
@@ -61,6 +61,12 @@ export default class CircularSlider extends PureComponent {
     bgCircleColor: PropTypes.string,
     stopIcon: PropTypes.element,
     startIcon: PropTypes.element,
+    textBgCircleColor:PropTypes.string,
+    textCircleStrokeColor:PropTypes.string,
+    centerCircleText:PropTypes.string,
+    sickBar:PropTypes.bool,
+    famishedBar:PropTypes.bool,
+    touchRelease:PropTypes.func
   }
 
   static defaultProps = {
@@ -71,11 +77,14 @@ export default class CircularSlider extends PureComponent {
     gradientColorTo: '#ffcf00',
     clockFaceColor: '#9d9d9d',
     bgCircleColor: '#171717',
+    textBgCircleColor:'white',
+    touchRelease:false
   }
 
   state = {
     circleCenterX: false,
     circleCenterY: false,
+
   }
 
   componentWillMount() {
@@ -99,9 +108,11 @@ export default class CircularSlider extends PureComponent {
         if (newAngleLength < 0) {
           newAngleLength += 2 * Math.PI;
         }
+        this.props.touchRelease(false);
 
         onUpdate({ startAngle: newAngle, angleLength: newAngleLength % (2 * Math.PI) });
       },
+      onPanResponderRelease: (evt, gestureState) =>{this.props.touchRelease(true)},
     });
 
     this._wakePanResponder = PanResponder.create({
@@ -121,11 +132,16 @@ export default class CircularSlider extends PureComponent {
 
         onUpdate({ startAngle, angleLength: newAngleLength });
       },
+      onPanResponderRelease: (evt, gestureState) =>{this.props.touchRelease(true)},
     });
   }
 
   onLayout = () => {
-    this.setCircleCenter();
+
+    // Band-aid to fix https://github.com/bgryszko/react-native-circular-slider/issues/7
+    setTimeout(() => {
+      this.setCircleCenter();
+    }, 100);
   }
 
   setCircleCenter = () => {
@@ -137,38 +153,57 @@ export default class CircularSlider extends PureComponent {
 
   getContainerWidth() {
     const { strokeWidth, radius } = this.props;
-    return strokeWidth + radius * 2 + 2;
+    return strokeWidth + radius * 2 + 20;
   }
 
   render() {
     const { startAngle, angleLength, segments, strokeWidth, radius, gradientColorFrom, gradientColorTo, bgCircleColor,
-      showClockFace, clockFaceColor, startIcon, stopIcon } = this.props;
-
+      showClockFace, clockFaceColor, startIcon, stopIcon,textBgCircleColor,textCircleStrokeColor,centerCircleText,sickBar,famishedBar} = this.props;
+    const satisfied = (centerCircleText.toLowerCase() == 'satisfied' && Platform.OS != 'ios') ? "0 0 0 0 0 0 -9 12" : "0";
     const containerWidth = this.getContainerWidth();
 
     const start = calculateArcCircle(0, segments, radius, startAngle, angleLength);
     const stop = calculateArcCircle(segments - 1, segments, radius, startAngle, angleLength);
 
     return (
-      <View style={{ width: containerWidth, height: containerWidth }} onLayout={this.onLayout}>
-        <Svg
-          height={containerWidth}
-          width={containerWidth}
+      <View style={{ width: (Platform.OS === 'ios') ? containerWidth : containerWidth+100 , height: containerWidth+60,alignItems:'center',}} onLayout={this.onLayout}>
+       <Svg
+          height={containerWidth+50}
+          width={(Platform.OS === 'ios') ?containerWidth+50 : containerWidth+100}
           ref={circle => this._circle = circle}
+          style={{left:(Platform.OS === 'ios') ? 0 : 30 }}
         >
-          <Defs>
+        <Defs>
             {
               range(segments).map(i => {
                 const { fromX, fromY, toX, toY } = calculateArcCircle(i, segments, radius, startAngle, angleLength);
                 const { fromColor, toColor } = calculateArcColor(i, segments, gradientColorFrom, gradientColorTo)
                 return (
+                  // <LinearGradient key={i} id={getGradientId(i)} x1={fromX.toFixed(2)} y1={fromY.toFixed(2)} x2={toX.toFixed(2)} y2={toY.toFixed(2)}>
+                  //   <Stop offset="0%" stopColor={fromColor} />
+                  //   <Stop offset="1" stopColor={toColor} />
+                  // </LinearGradient>
                   <LinearGradient key={i} id={getGradientId(i)} x1={fromX.toFixed(2)} y1={fromY.toFixed(2)} x2={toX.toFixed(2)} y2={toY.toFixed(2)}>
-                    <Stop offset="0%" stopColor={fromColor} />
-                    <Stop offset="1" stopColor={toColor} />
+                    <Stop offset="0%" stopColor={'#e1e5e8'} />
+                    <Stop offset="1" stopColor={'#e1e5e8'} />
                   </LinearGradient>
                 )
               })
             }
+
+                  <LinearGradient id="yelgre" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="0" y2="1">
+                    <Stop offset="0%" stopColor="#d98352"/>
+                    <Stop offset="100%" stopColor="#ee7d43"/>
+                  </LinearGradient>
+                  <LinearGradient id="blumag" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="0" y2="1">
+                    <Stop offset="0%" stopColor="#0000ff"/>
+                    <Stop offset="100%" stopColor="#ff00ff"/>
+                  </LinearGradient>
+                  <LinearGradient id="magred" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="0" y2="1">
+                  <Stop offset="50%" stopColor="#e9c435"/>
+                  <Stop offset="100%" stopColor="#e9c435"/>
+                  </LinearGradient>
+
           </Defs>
 
           {/*
@@ -176,12 +211,126 @@ export default class CircularSlider extends PureComponent {
           */}
 
           <G transform={{ translate: `${strokeWidth/2 + radius + 1}, ${strokeWidth/2 + radius + 1}` }}>
+
+
             <Circle
+              cx="30"
+              cy="70"
               r={radius}
               strokeWidth={strokeWidth}
               fill="transparent"
               stroke={bgCircleColor}
+              strokeDasharray="950"
+              strokeDashoffset='-300.292'
+
+
+
+
+
             />
+            <Circle
+              cx="30"
+              cy="70"
+              r={radius}
+              strokeWidth={strokeWidth}
+              fill="transparent"
+              stroke={bgCircleColor}
+              strokeDasharray="660"
+              strokeDashoffset='-800.292'
+
+
+
+
+
+            />
+            {
+              famishedBar && (
+                <G>
+
+            <Circle
+              cx="30"
+              cy="70"
+              r={radius}
+              strokeWidth={strokeWidth}
+              fill="transparent"
+              stroke={'url(#magred)'}
+              strokeDasharray="370.48"
+              strokeDashoffset='-300'
+            />
+            <Circle
+              cx="30"
+              cy="70"
+              r={radius}
+              strokeWidth={strokeWidth}
+              fill="transparent"
+              stroke={bgCircleColor}
+              strokeDasharray="670"
+              strokeDashoffset='-520'
+            />
+            </G>
+
+            )
+          }
+          {
+            sickBar && (
+          <Circle
+            cx="30"
+            cy="70"
+            r={radius}
+            strokeWidth={strokeWidth}
+            fill="transparent"
+            stroke={'url(#yelgre)'}
+            strokeDasharray="660"
+            strokeDashoffset='-800'
+          />
+            )
+          }
+
+
+          {/*  <G fill="none"  strokeWidth="15" transform={{translate:(0,30)}}>
+          <Path  d="M -126.6,50 A 100,120 0 0,1 -86.6,-50" stroke="url(#blumag)"/>
+
+         </G>*/}
+            {/*
+              sickBar && (
+                <G fill="none"  strokeWidth="15" transform={{translate:(180,70)}}>
+                    <Path x="-8" y="-10"   d="M 76.6,-75 A 100,120 0 0,1 86.6,90" stroke="url(#yelgre)"/>
+
+                </G>
+                )
+              */}
+
+            <G fill="none" strokeWidth="50" >
+             <Path x="30" y="60"  d="M 0,-100 A 100,100 0 0,1 86.6,-50" stroke="#c4c4c4"/>
+             <Path x="30" y="60" d="M -86.6,-50 A 100,100 0 0,1 0,-100" stroke="#c4c4c4"/>
+           </G>
+            {/*
+            <Circle
+              cx="30"
+              cy="70"
+              r={115 }
+              fill="transparent"
+              stroke={'#c4c2c2'}
+              strokeWidth="35"
+            />*/}
+            {/* Text Circle */}
+
+
+            <Circle
+              cx="30"
+              cy="70"
+              r={(strokeWidth + 50) }
+              fill={textBgCircleColor}
+              stroke={textCircleStrokeColor}
+              strokeWidth="15"
+            />
+            <Text
+              x="30"
+              y="50"
+              textAnchor="middle"
+              fontSize="20"
+              fill="black"
+              ><TSpan dx={satisfied} fontSize="20">{centerCircleText}</TSpan></Text>
             {
               showClockFace && (
                 <ClockFace
@@ -200,7 +349,8 @@ export default class CircularSlider extends PureComponent {
                     d={d}
                     key={i}
                     strokeWidth={strokeWidth}
-                    stroke={`url(#${getGradientId(i)})`}
+                    //stroke={`url(#${getGradientId(i)})`}
+                    storke={'transparent'}
                     fill="transparent"
                   />
                 )
@@ -218,10 +368,12 @@ export default class CircularSlider extends PureComponent {
               {...this._wakePanResponder.panHandlers}
             >
               <Circle
+                cx="30"
+                cy="70"
                 r={(strokeWidth - 1) / 2}
                 fill={bgCircleColor}
                 stroke={gradientColorTo}
-                strokeWidth="1"
+                strokeWidth="10"
               />
               {
                 stopIcon
@@ -239,10 +391,12 @@ export default class CircularSlider extends PureComponent {
               {...this._sleepPanResponder.panHandlers}
             >
               <Circle
+                cx="30"
+                cy="70"
                 r={(strokeWidth - 1) / 2}
                 fill={bgCircleColor}
                 stroke={gradientColorFrom}
-                strokeWidth="1"
+                strokeWidth="30"
               />
               {
                 startIcon
