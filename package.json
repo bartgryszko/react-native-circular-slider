@@ -1,12 +1,48 @@
 {
-  "name": "react-native-circular-slider",
-  "version": "1.0.1",
-  "description": "React Native component for creating circular slider",
-  "main": "src/CircularSlider.js",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/bgryszko/react-native-circular-slider.git"
+  "_from": "react-native-circular-slider",
+  "_id": "react-native-circular-slider@1.0.1",
+  "_inBundle": false,
+  "_integrity": "sha1-nWXAurkobE18t6tUBik0PeyM6CQ=",
+  "_location": "/react-native-circular-slider",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-native-circular-slider",
+    "name": "react-native-circular-slider",
+    "escapedName": "react-native-circular-slider",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
   },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-circular-slider/-/react-native-circular-slider-1.0.1.tgz",
+  "_shasum": "9d65c0bab9286c4d7cb7ab540629343dec8ce824",
+  "_spec": "react-native-circular-slider",
+  "_where": "/Users/zeppingdev/Projects/sicce_contrall_test",
+  "author": {
+    "name": "Bart Gryszko",
+    "email": "b@gryszko.com"
+  },
+  "bugs": {
+    "url": "https://github.com/bgryszko/react-native-circular-slider/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "d3-interpolate": "^1.1.2",
+    "lodash.range": "^3.2.0",
+    "react-native-svg": ">=6.4.1"
+  },
+  "deprecated": false,
+  "description": "React Native component for creating circular slider",
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "homepage": "https://github.com/bgryszko/react-native-circular-slider",
   "keywords": [
     "react",
     "react-native",
@@ -21,26 +57,12 @@
     "timer",
     "react-component"
   ],
-  "author": {
-    "name": "Bart Gryszko",
-    "email": "b@gryszko.com"
-  },
-  "files": [
-    "src",
-    "README.md"
-  ],
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bgryszko/react-native-circular-slider/issues"
+  "main": "src/CircularSlider.js",
+  "name": "react-native-circular-slider",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bgryszko/react-native-circular-slider.git"
   },
-  "homepage": "https://github.com/bgryszko/react-native-circular-slider",
-  "dependencies": {
-    "d3-interpolate": "^1.1.2",
-    "lodash.range": "^3.2.0",
-    "react-native-svg": "^5.1.5"
-  },
-  "peerDependencies": {
-    "react-native": ">=0.40.0",
-    "react": ">=15.4.0"
-  }
+  "version": "1.0.1"
 }
