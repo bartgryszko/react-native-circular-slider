@@ -1,7 +1,7 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 import { G, Circle, Text, Line } from 'react-native-svg';
 import range from 'lodash.range';
-
+import PropTypes from 'prop-types'; // ES6
 
 export default class ClockFace extends PureComponent {
 

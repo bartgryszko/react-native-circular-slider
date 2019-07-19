@@ -1,9 +1,10 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 import { PanResponder, View } from 'react-native';
 import Svg, { Circle, G, LinearGradient, Path, Defs, Stop } from 'react-native-svg';
 import range from 'lodash.range';
 import { interpolateHcl as interpolateGradient } from 'd3-interpolate';
 import ClockFace from './ClockFace';
+import PropTypes from 'prop-types'; // ES6
 
 
 function calculateArcColor(index0, segments, gradientColorFrom, gradientColorTo) {
