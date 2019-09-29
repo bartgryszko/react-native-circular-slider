@@ -47,7 +47,6 @@ function getGradientId(index) {
 }
 
 export default class CircularSlider extends PureComponent {
-
   static propTypes = {
     onUpdate: PropTypes.func.isRequired,
     startAngle: PropTypes.number.isRequired,
@@ -81,9 +80,23 @@ export default class CircularSlider extends PureComponent {
 
   componentWillMount() {
     this._sleepPanResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: (evt, gestureState) => this.setCircleCenter(),
+      onPanResponderGrant: (evt, gestureState) => {
+        this.setCircleCenter()
+        const { onPressIn } = this.props
+        if (onPressIn) {
+          onPressIn()
+        }
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        const { onPressOut } = this.props
+        if (onPressOut) {
+          onPressOut()
+        }
+      },
       onPanResponderMove: (evt, { moveX, moveY }) => {
         const { circleCenterX, circleCenterY } = this.state;
         const { angleLength, startAngle, onUpdate } = this.props;
@@ -102,13 +115,31 @@ export default class CircularSlider extends PureComponent {
         }
 
         onUpdate({ startAngle: newAngle, angleLength: newAngleLength % (2 * Math.PI) });
+        // this._handleOnPress()
+      },
+      onPanResponderTerminate: (evt, gestureState) => {
+        console.log('onPanResponderTerminate', evt)
+        return false
       },
     });
 
     this._wakePanResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: (evt, gestureState) => this.setCircleCenter(),
+      onPanResponderGrant: (evt, gestureState) => {
+        this.setCircleCenter()
+        const { onPressIn } = this.props
+        if (onPressIn) {
+          onPressIn()
+        }
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        const { onPressOut } = this.props
+        if (onPressOut) {
+          onPressOut()
+        }
+      },
       onPanResponderMove: (evt, { moveX, moveY }) => {
         const { circleCenterX, circleCenterY } = this.state;
         const { angleLength, startAngle, onUpdate } = this.props;
@@ -121,6 +152,11 @@ export default class CircularSlider extends PureComponent {
         }
 
         onUpdate({ startAngle, angleLength: newAngleLength });
+        // this._handleOnPress()
+      },
+      onPanResponderTerminate: (evt, gestureState) => {
+        console.log('onPanResponderTerminate', evt)
+        return false
       },
     });
   }
