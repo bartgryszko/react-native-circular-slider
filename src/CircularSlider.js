@@ -176,7 +176,7 @@ export default class CircularSlider extends PureComponent {
             ##### Circle
           */}
 
-          <G transform={{ translate: `${strokeWidth/2 + radius + 1}, ${strokeWidth/2 + radius + 1}` }}>
+          <G transform={`translate(${strokeWidth/2 + radius + 1}, ${strokeWidth/2 + radius + 1})`}>
             <Circle
               r={radius}
               strokeWidth={strokeWidth}
@@ -214,7 +214,7 @@ export default class CircularSlider extends PureComponent {
 
             <G
               fill={gradientColorTo}
-              transform={{ translate: `${stop.toX}, ${stop.toY}` }}
+              transform={`translate(${stop.toX}, ${stop.toY})`}
               onPressIn={() => this.setState({ angleLength: angleLength + Math.PI / 2 })}
               {...this._wakePanResponder.panHandlers}
             >
@@ -235,7 +235,7 @@ export default class CircularSlider extends PureComponent {
 
             <G
               fill={gradientColorFrom}
-              transform={{ translate: `${start.fromX}, ${start.fromY}` }}
+              transform={`translate(${start.fromX}, ${start.fromY})`}
               onPressIn={() => this.setState({ startAngle: startAngle - Math.PI / 2, angleLength: angleLength + Math.PI / 2 })}
               {...this._sleepPanResponder.panHandlers}
             >
